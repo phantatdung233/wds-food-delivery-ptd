@@ -26,7 +26,7 @@ export default async function RestaurantPage({ params }: PageProps<"/restaurant/
       </Button>
 
       <section className="overflow-hidden rounded-xl border">
-        <div className="relative aspect-21/9 w-full bg-muted">
+        <div className="relative aspect-3/1 h-40 sm:h-52 w-full bg-muted">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={restaurant.imageUrl}

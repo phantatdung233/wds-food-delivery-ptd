@@ -7,7 +7,7 @@ export default function RestaurantLoading() {
 
       <Skeleton className="mb-4 h-7 w-40" />
       <div className="overflow-hidden rounded-xl border">
-        <Skeleton className="aspect-21/9 w-full rounded-none" />
+        <Skeleton className="h-40 w-full rounded-none sm:h-52" />
         <div className="space-y-3 p-5 sm:p-6">
           <Skeleton className="h-8 w-64" />
           <Skeleton className="h-4 w-full max-w-xl" />

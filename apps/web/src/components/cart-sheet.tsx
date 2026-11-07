@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 
-import { useCartHydrated } from "@/lib/use-cart-hydrated";
+import { CartList } from "@/components/cart-panel";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -16,14 +16,16 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { formatPrice } from "@/lib/format";
-import { selectTotalPrice, selectTotalQuantity, useCartStore } from "@/lib/cart-store";
+import { selectCartItems, selectTotalPrice, selectTotalQuantity, useCartStore } from "@/lib/cart-store";
+import { useCartHydrated } from "@/lib/use-cart-hydrated";
 
 export function CartSheet() {
   const hydrated = useCartHydrated();
-  const itemCount = useCartStore((state) => state.items.length);
+  const entries = useCartStore(selectCartItems);
   const totalQuantity = useCartStore(selectTotalQuantity);
   const totalPrice = useCartStore(selectTotalPrice);
 
+  const visible = hydrated ? entries : [];
   const count = hydrated ? totalQuantity : 0;
 
   return (
@@ -32,13 +34,15 @@ export function CartSheet() {
         render={
           <Button variant="outline" size="sm" className="gap-2">
             <ShoppingBag className="size-4" aria-hidden />
+            <span className="sr-only">Xem nội dung giỏ hàng, </span>
             <span className="hidden sm:inline">Giỏ hàng</span>
             <span
-              aria-label={`${count} món trong giỏ`}
               className="grid min-w-5 place-items-center rounded-full bg-primary px-1.5 text-[0.7rem] leading-5 font-semibold text-primary-foreground tabular-nums"
+              aria-hidden
             >
               {count}
             </span>
+            <span className="sr-only">{count} món</span>
           </Button>
         }
       />
@@ -47,23 +51,16 @@ export function CartSheet() {
         <SheetHeader>
           <SheetTitle>Giỏ hàng</SheetTitle>
           <SheetDescription>
-            {hydrated && itemCount > 0
-              ? `${count} món đang chờ đặt.`
-              : "Chưa có món nào trong giỏ."}
+            {visible.length > 0 ? `${count} món đang chờ đặt.` : "Chưa có món nào trong giỏ."}
           </SheetDescription>
         </SheetHeader>
 
         <div className="flex-1 overflow-y-auto px-4">
-          {hydrated && itemCount === 0 ? (
-            <div className="flex h-full flex-col items-center justify-center gap-3 py-16 text-center">
-              <span className="grid size-12 place-items-center rounded-full bg-muted">
-                <ShoppingBag className="size-6 text-muted-foreground" aria-hidden />
-              </span>
-              <p className="text-sm text-muted-foreground">
-                Thêm món từ thực đơn của nhà hàng để bắt đầu.
-              </p>
-            </div>
-          ) : null}
+          {hydrated ? (
+            <CartList entries={visible} />
+          ) : (
+            <div className="h-16 animate-pulse rounded-lg bg-muted" aria-hidden />
+          )}
         </div>
 
         <Separator />
@@ -76,7 +73,7 @@ export function CartSheet() {
           </div>
           <Button
             className="w-full"
-            disabled={!hydrated || itemCount === 0}
+            disabled={visible.length === 0}
             render={<Link href="/checkout" />}
           >
             Thanh toán

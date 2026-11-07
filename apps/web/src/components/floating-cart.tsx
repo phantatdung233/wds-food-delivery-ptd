@@ -18,23 +18,30 @@ export function FloatingCartButton() {
   const price = hydrated ? totalPrice : 0;
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-30 flex justify-center px-4 sm:justify-end sm:px-6">
+    <div className="pointer-events-none fixed right-4 bottom-4 z-30 sm:right-6">
       <Button
         className="pointer-events-auto h-12 gap-3 rounded-full px-5 shadow-lg"
-        render={<Link href="/checkout" aria-label={`Giỏ hàng, ${count} món`} />}
-      >
-        <ShoppingBag className="size-5" aria-hidden />
-        <span className="text-sm font-medium">Giỏ hàng</span>
-        <span
-          className="grid min-w-6 place-items-center rounded-full bg-primary-foreground/20 px-2 text-xs leading-6 font-semibold tabular-nums"
-          aria-live="polite"
-        >
-          {count}
-        </span>
-        {price > 0 ? (
-          <span className="text-xs opacity-90 tabular-nums">{formatPrice(price)}</span>
-        ) : null}
-      </Button>
+        render={
+          <Link href="/checkout">
+            <ShoppingBag className="size-5" aria-hidden />
+            <span className="text-sm font-medium">Giỏ hàng</span>
+            <span className="sr-only">
+              , {count} món{price > 0 ? `, tổng ${formatPrice(price)}` : ""}
+            </span>
+            <span
+              className="grid min-w-6 place-items-center rounded-full bg-primary-foreground/20 px-2 text-xs leading-6 font-semibold tabular-nums"
+              aria-hidden
+            >
+              {count}
+            </span>
+            {price > 0 ? (
+              <span className="text-xs opacity-90 tabular-nums" aria-hidden>
+                {formatPrice(price)}
+              </span>
+            ) : null}
+          </Link>
+        }
+      />
     </div>
   );
 }
