@@ -34,3 +34,14 @@ jobs:
       - run: pnpm -C apps/web install --frozen-lockfile
       - run: pnpm -C apps/web build
       - run: pnpm dlx @lhci/cli@0.14.0 autorun --config=./lighthouserc.json
+      # LHCI only prints the score when an assertion FAILS, and never prints the
+      # per-audit numbers. Upload the raw reports on every run so a red build can
+      # be diagnosed from real metrics instead of guesswork.
+      - if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+          if-no-files-found: warn
+          retention-days: 14
+
