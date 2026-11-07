@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" role="img" aria-label="Phở Hà Nội">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#fb923c"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#g)"/>
+  <circle cx="656" cy="99" r="126.00000000000001" fill="#ffffff" opacity="0.12"/>
+  <circle cx="144" cy="387" r="153" fill="#000000" opacity="0.08"/>
+  <text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="600" font-size="44" fill="#ffffff">Phở Hà Nội</text>
+</svg>

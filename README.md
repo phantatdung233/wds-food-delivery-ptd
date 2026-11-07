@@ -99,21 +99,32 @@ Chi tiết: [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md).
 | `node scripts/check-repo.mjs` | root | Chấm bài tự động |
 | `node scripts/check-repo.mjs --build` | root | Chấm + build |
 
-## Checklist kiểm tra thủ công
+## Kiểm tra
 
-Grader chỉ kiểm tra tĩnh; các mục sau phải tự xác nhận:
+Ba lớp, không có test framework (xem [ADR-0003](docs/adr/0003-grader-la-seam-duy-nhat.md)):
 
-- [ ] 375px: không tràn ngang, nav gọn gàng
+```sh
+node scripts/check-repo.mjs --build     # grader của khoá + build (bắt buộc, 0 FAIL)
+pnpm -C apps/web build                  # build sạch
+node scripts/e2e-check.mjs              # 18 kiểm tra hành vi thật trên Chromium
+```
+
+`e2e-check.mjs` cần `playwright-core` và Chromium, cài ngoài repo:
+
+```sh
+pnpm dlx playwright-core install chromium
+cd /tmp && npm i playwright-core        # hoặc bất kỳ đâu ngoài repo
+PLAYWRIGHT_CORE_PATH=/tmp/node_modules/playwright-core node scripts/e2e-check.mjs
+```
+
+Nó tự build xong chạy server ở cổng 3210, lái trình duyệt qua toàn bộ luồng đặt món, và
+lưu ảnh vào `.screenshots/` (không commit).
+
+Các mục dưới đây cần con người xác nhận:
+
+- [ ] Lighthouse (Home) Performance ≥ 0.85 — chạy CI hoặc `pnpm dlx @lhci/cli autorun`
 - [ ] 768px: lưới card chuyển 2 cột
-- [ ] 1440px: lưới card chuyển 3–4 cột, nội dung không kéo dài quá khổ
-- [ ] Thêm món → badge tăng ngay, có toast
-- [ ] Reload trang → giỏ hàng còn nguyên
-- [ ] Bấm giảm số lượng về 0 → dòng món biến mất
-- [ ] `/restaurant/khong-ton-tai` → trang not-found
-- [ ] Bỏ trống từng trường checkout → đúng một lỗi tiếng Việt bên dưới
-- [ ] `0901234567` qua validate; `012345` bị báo lỗi
-- [ ] Đặt hàng → spinner → màn xác nhận có mã đơn → giỏ hàng trống
-- [ ] Lighthouse (Home) Performance ≥ 0.85
+- [ ] Không tràn ngang khi kéo DevTools từ 375px lên Desktop
 
 ## Quy ước
 
@@ -131,11 +142,19 @@ Grader chỉ kiểm tra tĩnh; các mục sau phải tự xác nhận:
 
 ## Screenshots
 
-<!-- TODO: chụp lại sau lần chạy đầu tiên, thay thế phần này -->
+Ảnh chụp tự động bởi `scripts/e2e-check.mjs` (Playwright, Chromium headless).
 
-| Trang chủ | Trang nhà hàng | Checkout |
-| --------- | -------------- | -------- |
-| _chưa có_ | _chưa có_ | _chưa có_ |
+| Trang chủ (desktop) | Trang nhà hàng |
+| ------------------- | -------------- |
+| ![Trang chủ](docs/screenshots/home-1440.png) | ![Trang nhà hàng](docs/screenshots/restaurant-1440.png) |
+
+| Trang chủ (375px) | Cart Drawer |
+| ----------------- | ----------- |
+| ![Trang chủ mobile](docs/screenshots/home-375.png) | ![Cart Drawer](docs/screenshots/cart-drawer.png) |
+
+| Checkout | Xác nhận đặt hàng |
+| -------- | ----------------- |
+| ![Checkout](docs/screenshots/checkout-1440.png) | ![Xác nhận](docs/screenshots/confirmation.png) |
 
 ## Giấy phép
 
