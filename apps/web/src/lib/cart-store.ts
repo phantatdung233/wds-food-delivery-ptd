@@ -22,6 +22,22 @@ export type CartActions = {
 
 export const MAX_QUANTITY = 99;
 
+/**
+ * The single rule for quantity changes: clamp to MAX_QUANTITY, and drop the
+ * line entirely when it would fall to zero. Every action routes through this,
+ * so "what happens at the edges" is defined once.
+ */
+function withQuantity(items: CartItem[], menuItemId: string, delta: number): CartItem[] {
+  return items.flatMap((entry) => {
+    if (entry.menuItem.id !== menuItemId) {
+      return [entry];
+    }
+
+    const next = Math.min(entry.quantity + delta, MAX_QUANTITY);
+    return next < 1 ? [] : [{ ...entry, quantity: next }];
+  });
+}
+
 export const useCartStore = create<CartState & CartActions>()(
   persist(
     (set) => ({
@@ -35,13 +51,7 @@ export const useCartStore = create<CartState & CartActions>()(
             return { items: [...state.items, { menuItem: item, quantity: 1 }] };
           }
 
-          return {
-            items: state.items.map((entry) =>
-              entry.menuItem.id === item.id
-                ? { ...entry, quantity: Math.min(entry.quantity + 1, MAX_QUANTITY) }
-                : entry,
-            ),
-          };
+          return { items: withQuantity(state.items, item.id, 1) };
         }),
 
       removeItem: (menuItemId) =>
@@ -50,28 +60,10 @@ export const useCartStore = create<CartState & CartActions>()(
         })),
 
       increaseQuantity: (menuItemId) =>
-        set((state) => ({
-          items: state.items.map((entry) =>
-            entry.menuItem.id === menuItemId
-              ? { ...entry, quantity: Math.min(entry.quantity + 1, MAX_QUANTITY) }
-              : entry,
-          ),
-        })),
+        set((state) => ({ items: withQuantity(state.items, menuItemId, 1) })),
 
       decreaseQuantity: (menuItemId) =>
-        set((state) => ({
-          items: state.items.flatMap((entry) => {
-            if (entry.menuItem.id !== menuItemId) {
-              return [entry];
-            }
-
-            if (entry.quantity <= 1) {
-              return [];
-            }
-
-            return [{ ...entry, quantity: entry.quantity - 1 }];
-          }),
-        })),
+        set((state) => ({ items: withQuantity(state.items, menuItemId, -1) })),
 
       clearCart: () => set({ items: [] }),
     }),
@@ -95,6 +87,3 @@ export const selectTotalPrice = (state: CartState) =>
 
 export const selectDistinctRestaurantCount = (state: CartState) =>
   new Set(state.items.map((entry) => entry.menuItem.restaurantId)).size;
-
-export const selectQuantityOf = (menuItemId: string) => (state: CartState) =>
-  state.items.find((entry) => entry.menuItem.id === menuItemId)?.quantity ?? 0;

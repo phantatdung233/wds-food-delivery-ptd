@@ -41,6 +41,9 @@ export function OrderForm({ entries, total, onOrdered }: OrderFormProps) {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           ...values,
+          // A cleared textarea submits "", which is not a note the customer
+          // wrote. Send it as absent so "no note" has one representation.
+          note: values.note?.trim() ? values.note.trim() : undefined,
           items: entries.map((entry) => ({
             menuItemId: entry.menuItem.id,
             name: entry.menuItem.name,

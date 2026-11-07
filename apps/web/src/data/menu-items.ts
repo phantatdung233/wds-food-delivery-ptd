@@ -136,7 +136,3 @@ export function getRestaurant(id: string) {
 export function getMenuItemsByRestaurant(restaurantId: string) {
   return menuItems.filter((item) => item.restaurantId === restaurantId);
 }
-
-export function getMenuItem(id: string) {
-  return menuItems.find((item) => item.id === id);
-}

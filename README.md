@@ -101,30 +101,54 @@ Chi tiết: [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md).
 
 ## Kiểm tra
 
-Ba lớp, không có test framework (xem [ADR-0003](docs/adr/0003-grader-la-seam-duy-nhat.md)):
+Theo [ADR-0003](docs/adr/0003-grader-la-seam-duy-nhat.md), dự án **không có test framework**.
+Có đúng hai seam tự động và một checklist thủ công:
 
 ```sh
 node scripts/check-repo.mjs --build     # grader của khoá + build (bắt buộc, 0 FAIL)
 pnpm -C apps/web build                  # build sạch
-node scripts/e2e-check.mjs              # 18 kiểm tra hành vi thật trên Chromium
+pnpm -C apps/web lint                   # ESLint sạch
 ```
 
-`e2e-check.mjs` cần `playwright-core` và Chromium, cài ngoài repo:
+Lighthouse CI (trang Home, Performance ≥ 0.85) chạy ở job `lighthouse` trên GitHub Actions.
 
-```sh
-pnpm dlx playwright-core install chromium
-cd /tmp && npm i playwright-core        # hoặc bất kỳ đâu ngoài repo
-PLAYWRIGHT_CORE_PATH=/tmp/node_modules/playwright-core node scripts/e2e-check.mjs
-```
+### Checklist thủ công
 
-Nó tự build xong chạy server ở cổng 3210, lái trình duyệt qua toàn bộ luồng đặt món, và
-lưu ảnh vào `.screenshots/` (không commit).
+Grader chỉ khẳng định được cấu trúc, không khẳng định hành vi. Các mục sau **phải tự
+kiểm trước khi đóng ticket** — đây là yêu cầu của ADR-0003, không phải tuỳ chọn.
 
-Các mục dưới đây cần con người xác nhận:
+**Responsive**
 
-- [ ] Lighthouse (Home) Performance ≥ 0.85 — chạy CI hoặc `pnpm dlx @lhci/cli autorun`
+- [ ] 375px: không tràn ngang, nav gọn gàng
 - [ ] 768px: lưới card chuyển 2 cột
-- [ ] Không tràn ngang khi kéo DevTools từ 375px lên Desktop
+- [ ] 1440px: lưới card chuyển 3 cột, nội dung không kéo dài quá khổ
+- [ ] Kéo DevTools từ 375px lên Desktop: không xuất hiện thanh cuộn ngang ở bất kỳ mốc nào
+
+**Điều hướng**
+
+- [ ] Trang chủ bấm vào card → sang đúng `/restaurant/[id]`, có món kèm ảnh và giá
+- [ ] Gõ `/restaurant/khong-ton-tai` → hiện trang not-found, không crash
+
+**Giỏ hàng**
+
+- [ ] Thêm món → badge tăng ngay, có toast
+- [ ] Thêm lại cùng món → số lượng tăng, badge cộng dồn
+- [ ] **Reload trang → giỏ hàng còn nguyên**
+- [ ] Bấm giảm số lượng về 1 rồi giảm tiếp → dòng món biến mất
+- [ ] Mở drawer → danh sách món khớp với badge
+
+**Checkout**
+
+- [ ] **Bỏ trống từng trường → đúng một lỗi tiếng Việt ngay dưới trường đó**
+- [ ] `0901234567` qua validate; `012345` bị báo lỗi
+- [ ] `" 0901234567"` (có dấu cách đầu) bị báo lỗi, không bị tự cắt
+- [ ] Đặt hàng → spinner → màn xác nhận có mã đơn → giỏ hàng trống
+- [ ] Reload sau khi đặt → không còn món nào
+
+**Chất lượng**
+
+- [ ] Lighthouse (Home) Performance ≥ 0.85
+- [ ] DevTools Console không có lỗi khi duyệt Home → nhà hàng → checkout → đặt hàng
 
 ## Quy ước
 
@@ -142,7 +166,7 @@ Các mục dưới đây cần con người xác nhận:
 
 ## Screenshots
 
-Ảnh chụp tự động bởi `scripts/e2e-check.mjs` (Playwright, Chromium headless).
+Ảnh chụp thủ công ở 1440px và 375px, dùng để đối chiếu với checklist ở trên.
 
 | Trang chủ (desktop) | Trang nhà hàng |
 | ------------------- | -------------- |
