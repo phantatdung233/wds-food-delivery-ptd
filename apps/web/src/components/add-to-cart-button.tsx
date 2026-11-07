@@ -19,7 +19,7 @@ export function AddToCartButton({
   const addItem = useCartStore((state) => state.addItem);
 
   function handleAdd() {
-    addItem(item, 1);
+    addItem(item);
     toast.success("Đã thêm vào giỏ", {
       description: `${item.name} · ${restaurantName}`,
     });

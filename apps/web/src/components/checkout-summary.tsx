@@ -21,14 +21,14 @@ export function CheckoutSummary() {
   return (
     <section aria-label="Món trong giỏ" className="rounded-xl border">
       <ul className="divide-y">
-        {entries.map(({ item, quantity }) => (
-          <li key={item.id} className="flex items-center gap-3 px-4 py-3">
+        {entries.map(({ menuItem, quantity }) => (
+          <li key={menuItem.id} className="flex items-center gap-3 px-4 py-3">
             <span className="grid size-6 shrink-0 place-items-center rounded-md bg-muted text-xs font-semibold tabular-nums">
               {quantity}
             </span>
-            <span className="min-w-0 flex-1 truncate text-sm">{item.name}</span>
+            <span className="min-w-0 flex-1 truncate text-sm">{menuItem.name}</span>
             <span className="text-sm tabular-nums text-muted-foreground">
-              {formatPrice(item.price * quantity)}
+              {formatPrice(menuItem.price * quantity)}
             </span>
           </li>
         ))}

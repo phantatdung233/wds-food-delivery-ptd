@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { OrderConfirmation, OrderForm } from "@/components/order-form";
+import { OrderConfirmation } from "@/components/order-confirmation";
+import { OrderForm } from "@/components/order-form";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/format";
-import { selectCartItems, useCartStore } from "@/lib/cart-store";
+import { selectCartItems, selectDistinctRestaurantCount, selectTotalPrice, useCartStore } from "@/lib/cart-store";
 import type { Order } from "@/lib/schemas/checkout";
 import { useCartHydrated } from "@/lib/use-cart-hydrated";
 
@@ -16,6 +17,8 @@ export function CheckoutView() {
   const hydrated = useCartHydrated();
   const entries = useCartStore(selectCartItems);
   const clearCart = useCartStore((state) => state.clearCart);
+  const total = useCartStore(selectTotalPrice);
+  const isMixed = useCartStore(selectDistinctRestaurantCount) > 1;
   const [order, setOrder] = useState<Order | null>(null);
 
   if (order) {
@@ -44,9 +47,6 @@ export function CheckoutView() {
       </div>
     );
   }
-
-  const total = entries.reduce((sum, entry) => sum + entry.item.price * entry.quantity, 0);
-  const isMixed = new Set(entries.map((entry) => entry.item.restaurantId)).size > 1;
 
   return (
     <div className="mt-8">

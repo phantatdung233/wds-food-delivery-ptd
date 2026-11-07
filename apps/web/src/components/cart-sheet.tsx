@@ -34,7 +34,6 @@ export function CartSheet() {
         render={
           <Button variant="outline" size="sm" className="gap-2">
             <ShoppingBag className="size-4" aria-hidden />
-            <span className="sr-only">Xem nội dung giỏ hàng, </span>
             <span className="hidden sm:inline">Giỏ hàng</span>
             <span
               className="grid min-w-5 place-items-center rounded-full bg-primary px-1.5 text-[0.7rem] leading-5 font-semibold text-primary-foreground tabular-nums"
@@ -42,7 +41,11 @@ export function CartSheet() {
             >
               {count}
             </span>
-            <span className="sr-only">{count} món</span>
+            {/* One label for the whole button, so a screen reader announces "Xem nội dung giỏ
+                hàng, N món" once instead of reading the visible text and the badge separately. */}
+            <span className="sr-only">
+              Xem nội dung giỏ hàng, {count} món
+            </span>
           </Button>
         }
       />
