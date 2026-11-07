@@ -1,3 +1,4 @@
+import { AddToCartButton } from "@/components/add-to-cart-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { MenuItem } from "@/data";
 import { formatPrice } from "@/lib/format";
@@ -25,8 +26,9 @@ export function MenuItemCard({
           <CardTitle className="text-sm leading-snug">{item.name}</CardTitle>
           <p className="line-clamp-2 text-xs text-muted-foreground">{item.description}</p>
         </CardHeader>
-        <CardContent className="mt-auto">
+        <CardContent className="mt-auto flex items-center justify-between gap-2">
           <p className="text-sm font-semibold">{formatPrice(item.price)}</p>
+          <AddToCartButton item={item} restaurantName={restaurantName} />
         </CardContent>
       </div>
     </Card>

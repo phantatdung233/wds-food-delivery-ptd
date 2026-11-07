@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro } from "next/font/google";
 
+import { FloatingCartButton } from "@/components/floating-cart";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
+import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
 
@@ -28,6 +30,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <FloatingCartButton />
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );

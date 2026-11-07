@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { HeaderCart } from "@/components/header-cart";
 import { Button } from "@/components/ui/button";
 
 const navigation = [
@@ -31,9 +32,10 @@ export function Header() {
           ))}
         </nav>
 
-        <Button size="sm" render={<Link href="/#nha-hang" />}>
+        <Button size="sm" className="hidden sm:inline-flex" render={<Link href="/#nha-hang" />}>
           Đặt món
         </Button>
+        <HeaderCart />
       </div>
     </header>
   );
