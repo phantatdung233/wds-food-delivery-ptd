@@ -14,7 +14,9 @@ Issues and specs for this repo live as GitHub issues. Use the `gh` CLI for all o
 
 Infer the repo from `git remote -v`; `gh` does this automatically when run inside a clone.
 
-**Target repo**: `phantatdung233/wds-food-delivery-ptd` (public). This working copy is not yet a git repo; once it is, `gh` will infer the repo automatically.
+**Target repo**: `phantatdung233/wds-food-delivery-ptd` (public). This working copy is a clone with `origin` set, so `gh` infers the repo automatically.
+
+**Current shape**: spec [#1](https://github.com/phantatdung233/wds-food-delivery-ptd/issues/1) holds the Buổi 1–3 plan; tickets #2–#10 are its children, chained by native `blocked_by` edges. Frontier = every open ticket with `blocked_by == 0` and no assignee.
 
 ## Pull requests as a triage surface
 

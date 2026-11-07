@@ -1,5 +1,8 @@
 # PRD — Food Delivery Web App (Frontend)
 
+> Kế hoạch triển khai và danh sách ticket: [issue #1](https://github.com/phantatdung233/wds-food-delivery-ptd/issues/1).
+> Quyết định kiến trúc: [`docs/ARCHITECTURE.md`](./ARCHITECTURE.md) và [`docs/adr/`](./adr/).
+
 ## 1. Mục tiêu
 
 Dựng lại toàn bộ phần Frontend của ứng dụng đặt món ăn dưới dạng một repo monorepo hoàn chỉnh, làm nền tảng để học các nội dung tiếp theo (Backend, Database ở Buổi 4).
@@ -84,3 +87,74 @@ Mock data tối thiểu 3 nhà hàng, mỗi nhà hàng 5 món. Field khớp sche
 
 - Next.js 16 có thể khác API so với các bản trước; ưu tiên đọc docs chính thức.
 - Mock data sai tên field sẽ phải sửa lại ở Buổi 4 khi nối backend.
+
+## 9. Deliverables by buổi
+
+Checklist gốc của khoá, chuyển vào đây để repo không cần giữ file brief riêng.
+Mỗi mục tương ứng với ticket trên issue tracker (xem [issue #1](https://github.com/phantatdung233/wds-food-delivery-ptd/issues/1)).
+
+### Buổi 1 — Nền tảng dự án
+
+**A. Môi trường, Git flow & Repo**
+
+- [ ] Cài Node.js (LTS), pnpm, Git, Docker Desktop, OpenCode và VS Code
+- [ ] Repo GitHub (public) tên `wds-food-delivery-ptd`
+- [ ] Monorepo: Frontend `apps/web`, Backend `apps/api`
+- [ ] `README.md` giới thiệu, hướng dẫn chạy, kèm screenshots
+- [ ] `AGENTS.md` cho OpenCode và `.gitignore` chuẩn
+- [ ] Thư mục `/docs` lưu PRD
+- [ ] `docker-compose.yml` cơ bản
+- [ ] Mỗi task một nhánh `feat/...`, commit Conventional Commits
+
+**AC**: `node -v` / `pnpm -v` / `git --version` / `docker -v` không lỗi · repo đã push với commit chuẩn ·
+nhánh `feat/...` đã gộp qua PR · `docker compose up -d` lên bình thường · `/docs` đủ PRD ·
+`README.md`, `AGENTS.md`, `.gitignore` có nội dung.
+
+**B. Khung giao diện — Tailwind CSS + shadcn/ui**
+
+- [ ] Khởi tạo **Next.js 16** trong `apps/web` bằng pnpm
+- [ ] Setup **Tailwind CSS** và **shadcn/ui**
+- [ ] Layout khung gồm Header và Footer
+- [ ] Component cơ bản shadcn/ui: Button, Card…
+- [ ] Trang Home tĩnh với dữ liệu cứng
+
+**AC**: `pnpm dev` mở được Home, terminal và console không lỗi · Home có Header, Footer, Button, Card
+đúng style · co giãn từ 375px lên Desktop, không tràn ngang · Home dùng dữ liệu tĩnh, chưa gọi API.
+
+### Buổi 2 — App Router, Server/Client Components & giỏ hàng Zustand
+
+- [ ] Mock data gồm tối thiểu 3 nhà hàng, mỗi nhà hàng 5 món; field gần schema Buổi 4
+      (`id`, `name`, `price`, `imageUrl`, `restaurantId`…)
+- [ ] Trang chủ hiển thị danh sách nhà hàng bằng **Server Component**
+- [ ] Trang `/restaurant/[id]` hiển thị món kèm hình ảnh và giá
+- [ ] Nested layout, `loading.tsx`, `error.tsx`, trang `not-found`
+- [ ] Chỉ `"use client"` ở component cần tương tác
+- [ ] Cart Store **Zustand**: thêm, xóa, tăng giảm, selector tổng số lượng và tổng tiền
+- [ ] **Zustand Persist** lưu giỏ vào LocalStorage
+- [ ] Cart Drawer xem trước đơn hàng
+- [ ] Floating cart badge hiển thị tổng số lượng
+- [ ] Toast (**Sonner**) mỗi khi thêm hoặc bớt món
+
+**AC**: Home hiển thị đủ nhà hàng, bấm sang đúng `/restaurant/[id]` · trang nhà hàng đủ món kèm ảnh và giá ·
+id không tồn tại hiện not-found · reload vẫn còn giỏ · badge đổi ngay và có Toast ·
+responsive 100% và Lighthouse Performance > 85.
+
+### Buổi 3 — Form Checkout với React Hook Form, Zod & Mock API
+
+- [ ] Trang `/checkout`, có nút dẫn từ Cart Drawer
+- [ ] Zod schema: họ tên, SĐT Việt Nam, địa chỉ giao hàng, ghi chú
+- [ ] React Hook Form kết hợp Zod resolver
+- [ ] Thông báo lỗi tiếng Việt rõ ràng cho từng trường
+- [ ] Mock API đặt hàng bằng MSW hoặc Route Handler
+- [ ] Trạng thái submit: spinner và vô hiệu hóa nút
+- [ ] Sau submit thành công: màn hình xác nhận kèm mã đơn giả lập, xóa giỏ hàng
+- [ ] Zod schema cho User Profile
+
+**AC**: bỏ trống hoặc nhập sai họ tên / SĐT / địa chỉ thì không submit được · mỗi trường sai hiện đúng một
+thông báo tiếng Việt bên dưới · `0901234567` hợp lệ, số khác báo lỗi · bấm đặt hàng thấy spinner rồi màn
+xác nhận có mã đơn · quay lại thấy giỏ hàng đã xóa sạch.
+
+### Tự kiểm tra
+
+Chạy `node scripts/check-repo.mjs` (thêm `--build` hoặc `--docker`). Đọc `README-CHECK.md`.
+`[PASS]` đã đạt · `[FAIL]` bắt buộc sửa · `[WARN]` nên tự kiểm tra lại.

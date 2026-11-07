@@ -1,13 +1,42 @@
 # Glossary
 
-Từ vựng domain của dự án. Dùng đúng thuật ngữ ở đây khi đặt tên biến, viết issue, test name hoặc đề xuất thay đổi.
+Food delivery frontend — the vocabulary shared by the Home catalogue, the cart, and
+checkout. Use these terms in issue titles, test names, and code identifiers.
 
-| Thuật ngữ | Ý nghĩa | Không dùng |
-| --------- | ------- | ---------- |
-| **Restaurant** (Nhà hàng) | Đơn vị bán món ăn. Trang chủ liệt kê danh sách nhà hàng. | Shop, Store, Vendor |
-| **MenuItem** (Món) | Một món ăn thuộc về một Restaurant. Có giá và hình ảnh. | Dish, Product, Food (dạng danh từ chung) |
-| **Cart** (Giỏ hàng) | Tập các món khách đang chọn, kèm số lượng. Lưu trong Zustand + LocalStorage. | Basket, Bag |
-| **CartItem** | Một dòng trong Cart: một MenuItem kèm `quantity`. | LineItem, OrderItem (chỉ dùng cho đơn đã đặt) |
-| **Order** (Đơn hàng) | Cart đã được đặt kèm thông tin giao hàng và mã đơn. | Purchase, Transaction |
-| **Checkout** | Bước điền thông tin giao hàng và xác nhận Order. | Payment (thanh toán thật nằm ngoài phạm vi) |
-| **Order code** (Mã đơn) | Chuỗi giả lập hiển thị sau khi đặt hàng thành công. | Order ID (mã đơn không phải khoá chính DB) |
+## Language
+
+**Restaurant**:
+A merchant that sells MenuItems and appears as a card on the Home page.
+_Avoid_: Shop, store, vendor
+
+**MenuItem**:
+A single dish belonging to one Restaurant, with a price and an image.
+_Avoid_: Dish, product, food
+
+**Cart**:
+The collection of CartItems a customer is assembling into an Order.
+_Avoid_: Basket, bag
+
+**CartItem**:
+One MenuItem held in the Cart, with a quantity.
+_Avoid_: Line item, order item
+
+**Order**:
+A Cart submitted with delivery details and an identifier.
+_Avoid_: Purchase, transaction
+
+**Order id**:
+The internal identifier of an Order. Matches the backend primary key; never shown to
+the customer.
+_Avoid_: Order number
+
+**Order code**:
+The customer-facing string identifying an Order on the confirmation screen, e.g.
+`ORD-7F3K2X`.
+_Avoid_: Order number, tracking number
+
+## UI steps (not domain entities)
+
+**Checkout**:
+The page and step where a customer supplies delivery details and confirms an Order.
+_Avoid_: Treating "checkout" as an entity or a saved record
