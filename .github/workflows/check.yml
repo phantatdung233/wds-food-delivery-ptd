@@ -37,11 +37,16 @@ jobs:
       # LHCI only prints the score when an assertion FAILS, and never prints the
       # per-audit numbers. Upload the raw reports on every run so a red build can
       # be diagnosed from real metrics instead of guesswork.
+      # include-hidden-files is required: .lighthouseci is a dot-directory, and
+      # upload-artifact silently skips hidden paths without it.
+      # if-no-files-found: error so a missing report fails the job instead of
+      # quietly turning data loss into a green tick.
       - if: always()
         uses: actions/upload-artifact@v5
         with:
           name: lighthouse-reports
           path: .lighthouseci
-          if-no-files-found: warn
+          include-hidden-files: true
+          if-no-files-found: error
           retention-days: 14
 
