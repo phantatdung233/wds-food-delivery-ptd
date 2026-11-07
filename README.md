@@ -149,6 +149,7 @@ kiểm trước khi đóng ticket** — đây là yêu cầu của ADR-0003, kh�
 
 - [ ] Lighthouse (Home) Performance ≥ 0.85
 - [ ] DevTools Console không có lỗi khi duyệt Home → nhà hàng → checkout → đặt hàng
+- [ ] Ảnh trong `docs/screenshots/` khớp với UI hiện tại; chụp lại nếu đã lệch
 
 ## Quy ước
 
@@ -166,7 +167,9 @@ kiểm trước khi đóng ticket** — đây là yêu cầu của ADR-0003, kh�
 
 ## Screenshots
 
-Ảnh chụp thủ công ở 1440px và 375px, dùng để đối chiếu với checklist ở trên.
+Ảnh chụp ở 1440px và 375px. Bộ ảnh này được tạo tự động bởi `scripts/e2e-check.mjs`
+trước khi script bị xoá theo ADR-0003, nên **không** phải bằng chứng hành vi — khi giao diện
+thay đổi, hãy chụp lại bằng tay.
 
 | Trang chủ (desktop) | Trang nhà hàng |
 | ------------------- | -------------- |
