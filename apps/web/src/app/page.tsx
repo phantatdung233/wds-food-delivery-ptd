@@ -19,9 +19,9 @@ export default function HomePage() {
         </h2>
 
         <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {restaurants.map((restaurant) => (
+          {restaurants.map((restaurant, index) => (
             <li key={restaurant.id}>
-              <RestaurantCard restaurant={restaurant} />
+              <RestaurantCard restaurant={restaurant} priority={index === 0} />
             </li>
           ))}
         </ul>

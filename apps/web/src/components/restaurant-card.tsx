@@ -7,7 +7,14 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import type { Restaurant } from "@/data";
 import { formatPrice } from "@/lib/format";
 
-export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
+export function RestaurantCard({
+  restaurant,
+  priority = false,
+}: {
+  restaurant: Restaurant;
+  /** The first card sits above the fold on every breakpoint and is the LCP element. */
+  priority?: boolean;
+}) {
   return (
     <Card className="flex flex-col overflow-hidden pt-0">
       <div className="relative aspect-16/9 w-full overflow-hidden bg-muted">
@@ -16,7 +23,8 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
           src={restaurant.imageUrl}
           alt={`Ảnh nhà hàng ${restaurant.name}`}
           className="size-full object-cover"
-          loading="lazy"
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : undefined}
         />
         <Badge className="absolute top-3 left-3 gap-1" variant="secondary">
           <Star className="size-3 fill-current" aria-hidden />
