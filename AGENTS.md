@@ -6,7 +6,7 @@ Hướng dẫn cho OpenCode (và các AI agent khác) khi làm việc trong repo
 
 Ứng dụng đặt món ăn (Food Delivery) được xây dựng lại toàn bộ phần Frontend qua 3 buổi học.
 
-- Kế hoạch & ticket: issue [#1](https://github.com/phantatdung233/wds-food-delivery-ptd/issues/1)
+- Kế hoạch & ticket: issue [#1](https://github.com/phantatdung233/wds-food-delivery/issues/1)
 - PRD: [`docs/PRD.md`](./docs/PRD.md)
 - Kiến trúc: [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
 - Quyết định: [`docs/adr/`](./docs/adr/)

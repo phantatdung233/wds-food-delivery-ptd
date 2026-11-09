@@ -1,6 +1,6 @@
 # PRD — Food Delivery Web App (Frontend)
 
-> Kế hoạch triển khai và danh sách ticket: [issue #1](https://github.com/phantatdung233/wds-food-delivery-ptd/issues/1).
+> Kế hoạch triển khai và danh sách ticket: [issue #1](https://github.com/phantatdung233/wds-food-delivery/issues/1).
 > Quyết định kiến trúc: [`docs/ARCHITECTURE.md`](./ARCHITECTURE.md) và [`docs/adr/`](./adr/).
 
 ## 1. Mục tiêu
@@ -91,14 +91,14 @@ Mock data tối thiểu 3 nhà hàng, mỗi nhà hàng 5 món. Field khớp sche
 ## 9. Deliverables by buổi
 
 Checklist gốc của khoá, chuyển vào đây để repo không cần giữ file brief riêng.
-Mỗi mục tương ứng với ticket trên issue tracker (xem [issue #1](https://github.com/phantatdung233/wds-food-delivery-ptd/issues/1)).
+Mỗi mục tương ứng với ticket trên issue tracker (xem [issue #1](https://github.com/phantatdung233/wds-food-delivery/issues/1)).
 
 ### Buổi 1 — Nền tảng dự án
 
 **A. Môi trường, Git flow & Repo**
 
 - [ ] Cài Node.js (LTS), pnpm, Git, Docker Desktop, OpenCode và VS Code
-- [ ] Repo GitHub (public) tên `wds-food-delivery-ptd`
+- [ ] Repo GitHub (public) tên `wds-food-delivery`
 - [ ] Monorepo: Frontend `apps/web`, Backend `apps/api`
 - [ ] `README.md` giới thiệu, hướng dẫn chạy, kèm screenshots
 - [ ] `AGENTS.md` cho OpenCode và `.gitignore` chuẩn
